@@ -76,15 +76,15 @@ sudo !!
 
 ##### Run last command and change some parameter using caret substitution (e.g. last command: echo 'aaa' -> rerun as: echo 'bbb')
 ```bash
-#last command: echo 'aaa'
+# last command: echo 'aaa'
 ^aaa^bbb
 
 #echo 'bbb'
 #bbb
 
-#Notice that only the first aaa will be replaced, if you want to replace all 'aaa', use ':&' to repeat it:
+# Notice that only the first aaa will be replaced, if you want to replace all 'aaa', use ':&' to repeat it:
 ^aaa^bbb^:&
-#or
+# or
 !!:gs/aaa/bbb/
 ```
 
@@ -220,7 +220,7 @@ echo ${var[@]#0}
 
 ##### Grep lines with strings from a file (e.g. lines with 'stringA or 'stringB' or 'stringC')
 ```bash
-#with grep
+# with grep
 test="stringA stringB stringC"
 grep ${test// /\\\|} file.txt
 # turning the space into 'or' (\|) in grep
@@ -238,6 +238,12 @@ helloworld
 cmd="bar=foo"
 eval "$cmd"
 echo "$bar" # foo
+```
+
+##### Record a terminal session
+```bash
+# https://github.com/asciinema/asciinema
+asciinema rec demo.cast
 ```
 
 ## Math
@@ -321,8 +327,7 @@ grep -c "^$"
 #####  Grep and return only integer
 ```bash
 grep -o '[0-9]*'
-
-#or
+# or
 grep -oP '\d*'
 ```
 #####  Grep integer with certain number of digits (e.g. 3)
@@ -348,7 +353,7 @@ grep -Po '\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}'
 ```bash
 grep -w 'target'
 
-#or using RE
+# or using RE
 grep '\btarget\b'
 ```
 
@@ -387,7 +392,7 @@ grep -v '^#' file.txt
 ##### Grep variables with space within it (e.g. myvar="some strings")
 ```bash
 grep "$myvar" filename
-#remember to quote the variable!
+# remember to quote the variable!
 ```
 
 ##### Grep only one/first match (e.g. 'bbo')
@@ -466,8 +471,8 @@ grep $'\t'
 ```bash
 $echo "$long_str"|grep -q "$short_str"
 if [ $? -eq 0 ]; then echo 'found'; fi
-#grep -q will output 0 if match found
-#remember to add space between []!
+# grep -q will output 0 if match found
+# remember to add space between []!
 ```
 
 ##### Grep strings between a bracket()
@@ -553,7 +558,7 @@ sed -i '$ s/.$//' filename
 
 ##### Add string to beginning of file (e.g. "\[")
 ```bash
-sed -i '1s/^/[/' file
+sed -i '1s/^/[/' filename
 ```
 
 ##### Add string at certain line number (e.g. add 'something' to line 1 and line 3)
@@ -700,7 +705,7 @@ sed '$ s/.$//'
 
 ##### Insert character at specified position of file (e.g. AAAAAA --> AAA#AAA)
 ```bash
-sed -r -e 's/^.{3}/&#/' file
+sed -r -e 's/^.{3}/&#/' filename
 ```
 
 
@@ -755,7 +760,7 @@ awk -v N=7 '{print}/bbo/&& --N<=0 {exit}'
 
 ##### Print filename and last line of all files in directory
 ```bash
-ls|xargs -n1 -I file awk '{s=$0};END{print FILENAME,s}' file
+ls|xargs -n1 -I file awk '{s=$0};END{print FILENAME,s}' filename
 ```
 
 ##### Add string to the beginning of a column (e.g add "chr" to column $3)
@@ -765,12 +770,12 @@ awk 'BEGIN{OFS="\t"}$3="chr"$3'
 
 ##### Remove lines with string (e.g. 'bbo')
 ```bash
-awk '!/bbo/' file
+awk '!/bbo/' filename
 ```
 
 ##### Remove last column
 ```bash
-awk 'NF{NF-=1};1' file
+awk 'NF{NF-=1};1' filename
 ```
 
 ##### Usage and meaning of NR and FNR
@@ -835,7 +840,7 @@ awk '{printf("%s\t%s\n",NR,$0)}'
 # David    cat
 # David    dog
 
-awk '{split($2,a,",");for(i in a)print $1"\t"a[i]}' file
+awk '{split($2,a,",");for(i in a)print $1"\t"a[i]}' filename
 
 # Detail here:　http://stackoverflow.com/questions/33408762/bash-turning-single-comma-separated-column-into-multi-line-string
 ```
@@ -949,7 +954,7 @@ find /dir/to/A -type f -name "*.py" -print 0| xargs -0 -r -I file cp -v -p file 
 
 ##### With sed
 ```bash
-ls |xargs -n1 -I file sed -i '/^Pos/d' file
+ls |xargs -n1 -I file sed -i '/^Pos/d' filename
 ```
 
 ##### Add the file name to the first line of file
@@ -1060,9 +1065,10 @@ else
   echo >&2 "Fatal error. This script requires mydir."
 fi
 
-# if variable is null
-if [ ! -s "myvariable" ]; then echo -e "variable is null!" ; fi
-#True of the length if "STRING" is zero.
+# Check if a variable is null
+if [ -z "$var" ]; then echo "NULL"; else echo "Not NULL"; fi
+# or 
+[ -z "$var" ] && echo "NULL"
 
 # Using test command (same as []), to test if the length of variable is nonzero
 test -n "$myvariable" && echo myvariable is "$myvariable" || echo myvariable is not set
@@ -1099,7 +1105,7 @@ if [[ $age -gt 21 ]]; then echo -e "forever 21!!" ; fi
 ```bash
 # Echo the file name under the current directory
 for i in $(ls); do echo file $i; done
-#or
+# or
 for i in *; do echo file $i; done
 
 # Make directories listed in a file (e.g. myfile)
@@ -1112,10 +1118,10 @@ for i in $(cat tpc_stats_0925.log |grep failed|grep -o '\query\w\{1,2\}'); do ca
 oifs="$IFS"; IFS=$'\n'; for line in $(cat myfile); do ...; done
 while read -r line; do ...; done <myfile
 
-#If only one word a line, simply
+# If only one word a line, simply
 for line in $(cat myfile); do echo $line; read -n1; done
 
-#Loop through an array
+# Loop through an array
 for i in "${arrayName[@]}"; do echo $i; done
 
 ```
@@ -1224,7 +1230,7 @@ TMOUT=10
 
 ##### Set how long you want to run a command
 ```bash
-#This will run the command 'sleep 10' for only 1 second.
+# This will run the command 'sleep 10' for only 1 second.
 timeout 1 sleep 10
 ```
 
@@ -1559,9 +1565,17 @@ stat filename.txt
 ps aux
 ```
 
+##### List processes by top memory usage
+```bash
+ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head
+```
+
 ##### Display a tree of processes
 ```bash
 pstree
+
+# or
+ps aux --forest
 ```
 
 ##### Find maximum number of processes
@@ -1593,7 +1607,7 @@ who -r
 ##### Change SysV runlevel (e.g. 5)
 ```bash
 init 5
-#or
+# or
 telinit 5
 ```
 
@@ -1795,7 +1809,7 @@ pushd .
 # then pop
 popd
 
-#or use dirs to display the list of currently remembered directories.
+# or use dirs to display the list of currently remembered directories.
 dirs -l
 ```
 
@@ -1806,7 +1820,7 @@ df -h
 # or
 du -h
 
-#or
+# or
 du -sk /var/log/* |sort -rn |head -10
 ```
 
@@ -1836,7 +1850,7 @@ runlevel
 ```bash
 init 3
 
-#or
+# or
 telinit 3
 ```
 
@@ -1967,7 +1981,7 @@ ldconfig -p
 ldd /bin/ls
 ```
 
-##### Check user login
+##### Check the most recent login of all users
 ```bash
 lastlog
 ```
@@ -2153,7 +2167,7 @@ ps aux|grep python
 ```bash
 ps -p <PID>
 
-#or
+# or
 cat /proc/<PID>/status
 cat /proc/<PID>/stack
 cat /proc/<PID>/stat
@@ -2201,21 +2215,21 @@ sudo dpkg --purge <package_name>
 ```bash
 ssh -f -L 9000:targetservername:8088 root@192.168.14.72 -N
 #-f: run in background; -L: Listen; -N: do nothing
-#the 9000 of your computer is now connected to the 8088 port of the targetservername through 192.168.14.72
-#so that you can see the content of targetservername:8088 by entering localhost:9000 from your browser.
+# the 9000 of your computer is now connected to the 8088 port of the targetservername through 192.168.14.72
+# so that you can see the content of targetservername:8088 by entering localhost:9000 from your browser.
 ```
 ##### Get process ID of a process (e.g. sublime_text)
 ```bash
-#pidof
+# pidof
 pidof sublime_text
 
-#pgrep, you don't have to type the whole program name
+# pgrep, you don't have to type the whole program name
 pgrep sublim
 
-#pgrep, echo 1 if process found, echo 0 if no such process
+# pgrep, echo 1 if process found, echo 0 if no such process
 pgrep -q sublime_text && echo 1 || echo 0
 
-#top, takes longer time
+# top, takes longer time
 top|grep sublime_text
 ```
 
@@ -2280,7 +2294,12 @@ sar -f /var/log/sa/sa31|tail
 journalctl --file ./log/journal/a90c18f62af546ccba02fa3734f00a04/system.journal  --since "2020-02-11 00:00:00"
 ```
 
-##### Show a listing of last logged in users.
+##### Show a listing of last logged in users
+```bash
+last
+```
+
+##### Show a listing of unsuccessful (bad) login attempts 
 ```bash
 lastb
 ```
@@ -2458,6 +2477,11 @@ dig +short www.example.net
 host www.example.net
 ```
 
+##### Check public IP address
+```bash
+curl http://checkip.amazonaws.com
+```
+
 ##### Get DNS TXT record a of domain
 ```bash
 dig -t txt www.example.net
@@ -2498,7 +2522,7 @@ $ sudo nc -l 80
 
 ##### Check which ports are listening for TCP connections from the network
 ```bash
-#notice that some companies might not like you using nmap
+# note that some companies might not like you using nmap
 nmap -sT -O localhost
 
 # check port 0-65535
@@ -2506,7 +2530,7 @@ nmap  -p0-65535 localhost
 ```
 ##### Check if a host is up and scan for open ports, also skip host discovery.
 ```bash
-#skips checking if the host is alive which may sometimes cause a false positive and stop the scan.
+# skips checking if the host is alive which may sometimes cause a false positive and stop the scan.
 $ nmap example.net -Pn
 
 # Example output:
@@ -2528,7 +2552,7 @@ $ nmap -A -T4 scanme.nmap.org
 # -A to enable OS and version detection, script scanning, and traceroute; -T4 for faster execution
 ```
 
-##### Look up website information (e.g. name server), searches for an object in a RFC 3912 database.
+##### Look up website information (e.g. name server), searches for an object in a RFC 3912 database
 ```bash
 whois example.net
 ```
@@ -2538,7 +2562,7 @@ whois example.net
 openssl s_client -showcerts -connect www.example.net:443
 ```
 
-##### Display IP address
+##### Display network interfaces and their associated IP addresses
 ```bash
 ip a
 ```
@@ -2597,6 +2621,10 @@ curl -I http://example.net/
 # ETag: "xxxxxx"
 # Accept-Ranges: bytes
 # Vary: Accept-Encoding
+```
+##### Find out the time spent between request and response
+```
+curl -v -o /dev/null -s -w 'Total: %{time_total}s\n' google.com
 ```
 
 ##### Find out the http status code of a URL
@@ -2739,11 +2767,11 @@ comm -23 fileA fileB
 ```bash
 nl fileA
 
-#or
+# or
 nl -nrz fileA
 # add leading zeros
 
-#or
+# or
 nl -w1 -s ' '
 # making it simple, blank separate
 ```
@@ -2878,7 +2906,7 @@ echo -e 'text here \c'
 
 ##### View first 50 characters of file
 ```bash
-head -c 50 file
+head -c 50 filename
 ```
 
 ##### Cut and get last column of a file
@@ -2916,6 +2944,11 @@ cat >>myfile
 let me add sth here
 # exit with ctrl+d
 
+# or
+cat << EoF >> filename
+> add something here
+> EoF 
+
 # or using tee
 tee -a myfile
 let me add sth else here
@@ -2934,9 +2967,9 @@ echo 'hihi' >>filename
 
 ##### Working with json data
 ```bash
-#install the useful jq package
-#sudo apt-get install jq
-#e.g. to get all the values of the 'url' key, simply pipe the json to the following jq command(you can use .[]. to select inner json, i.e jq '.[].url')
+# Install the useful jq package
+# sudo apt-get install jq
+# e.g. to get all the values of the 'url' key, simply pipe the json to the following jq command(you can use .[]. to select inner json, i.e jq '.[].url')
 cat file.json | jq '.url'
 ```
 
@@ -3009,7 +3042,7 @@ while read a b; do yes $b |head -n $a ; done <test.txt
 ## Others
 [[back to top](#handy-bash-one-liners)]
 
-##### Describe the format and characteristics of image files.
+##### Describe the format and characteristics of image files
 ```bash
 identify myimage.png
 #myimage.png PNG 1049x747 1049x747+0+0 8-bit sRGB 1.006MB 0.000u 0:00.000
@@ -3132,7 +3165,7 @@ history -w
 vi ~/.bash_history
 history -r
 
-#or
+# or
 history -d [line_number]
 ```
 
@@ -3283,6 +3316,12 @@ scp -r directoryname user@ip:/path/to/send
 # It is a function that calls itself twice every call until you run out of system resources.
 # A '# ' is added in front for safety reason, remove it when seriously you are testing it.
 # :(){:|:&};:
+```
+
+##### Trigger kernel crash
+```bash
+# Don't try this at home! 
+echo c > /proc/sysrq-trigger
 ```
 
 ##### Use the last argument
