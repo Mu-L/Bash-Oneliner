@@ -8,6 +8,11 @@ If you know other cool commands, please teach me!
 
 Here's a more stylish version of [Bash-Oneliner](https://onceupon.github.io/Bash-Oneliner/)~
 
+<a href="https://trendshift.io/repositories/11414?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-11414" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/11414/daily" alt="onceupon%2FBash-Oneliner | Trendshift" width="250" height="55"/></a>
+
+A human note: I started this in my notebook by hand, and I want to keep it that way. I'm not padding it with AI generated commands that never made me go WOW. Every command here is one I actually used and loved. If any of these saved you time,  feel free to drop a ⭐ star and/or [buy me a coffee](https://ko-fi.com/bonnieonceupon). Either way, thank you for stopping by. That already means a lot.
+
+
 ## Handy Bash one-liners
 
 - [Terminal Tricks](#terminal-tricks)
